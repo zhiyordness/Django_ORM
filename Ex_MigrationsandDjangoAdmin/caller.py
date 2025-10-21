@@ -7,4 +7,8 @@ django.setup()
 
 # Import your models here
 
+from main_app.models import Shoe, UniqueBrands
+
 # Create queries within functions
+
+print(unique_brands)
