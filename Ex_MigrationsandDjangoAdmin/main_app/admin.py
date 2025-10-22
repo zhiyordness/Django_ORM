@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.admin import ModelAdmin
 
-from .models import EventRegistration, Movie, Student, Supplier, Course
+from .models import EventRegistration, Movie, Student, Supplier, Course, Smartphone
 
 
 # Register your models here.
@@ -51,3 +51,8 @@ class CourseAdmin(ModelAdmin):
     ('Course Information', {'fields': ('title', 'lecturer', 'price', 'start_date', 'is_published', )}),
     ('Description', {'fields': ('description',)}),
     )
+
+
+@admin.register(Smartphone)
+class SmartphoneAdmin(admin.ModelAdmin):
+    list_display = ['brand', 'price', 'category']
