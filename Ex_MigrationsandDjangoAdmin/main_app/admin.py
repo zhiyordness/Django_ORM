@@ -1,3 +1,18 @@
 from django.contrib import admin
 
+from .models import EventRegistration, Movie
+
+
 # Register your models here.
+
+@admin.register(EventRegistration)
+class EventRegistrationAdmin(admin.ModelAdmin):
+    list_display = ('event_name', 'participant_name', 'registration_date')
+    search_fields = ('event_name', 'participant_name')
+    list_filter = ('registration_date', 'event_name')
+
+@admin.register(Movie)
+class MovieAdmin(admin.ModelAdmin):
+    list_display = ('title', 'director', 'release_year', 'genre')
+    search_fields = ('release_year', 'genre')
+    list_filter = ('title', 'director')
