@@ -85,7 +85,7 @@ WSGI_APPLICATION = 'orm_skeleton.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "lab_data_operations",
+        "NAME": "lab4_data_operations",
         "USER": "postgres",
         "PASSWORD": "Jivomir%1990",
         "HOST": "localhost",
