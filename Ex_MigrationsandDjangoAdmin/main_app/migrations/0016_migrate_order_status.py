@@ -3,9 +3,6 @@ from datetime import timedelta
 
 from django.db import migrations
 
-from main_app.choices import OrderStatusChoices
-
-
 
 def set_fields(apps, schema_editor):
     OrderModel = apps.get_model('main_app', 'Order')
