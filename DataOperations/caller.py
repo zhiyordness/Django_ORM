@@ -82,10 +82,40 @@ def add_students():
     #     )
     # ]
     # Student.objects.bulk_create(student_list)
-#
+# #
 def get_students_info():
     students = Student.objects.all()
     return '\n'.join(f"Student №{s.student_id}: {s.first_name} {s.last_name}; Email: {s.email}" for s in students)
 
 # print(get_students_info())
 # get_students_info()
+
+
+def update_students_emails():
+    students = Student.objects.all()
+    for s in students:
+        s.email = s.email.replace(s.email.split('@')[1], 'uni-students.com')
+        # s.save()
+    Student.objects.bulk_update(students, ['email'])
+
+
+def truncate_students():
+
+    # student = Student.objects.filter(id=1)
+    # student.delete()
+
+    students = Student.objects.all()
+    students.delete()
+
+
+
+
+
+
+
+
+
+
+
+
+
