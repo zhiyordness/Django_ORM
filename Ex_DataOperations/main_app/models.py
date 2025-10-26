@@ -42,15 +42,34 @@ class Task(models.Model):
     due_date = models.DateField()
     is_finished = models.BooleanField(default=False)
 
-class HotelRoom(models.Model):
-    class RoomTypes(models.TextChoices):
-        STANDARD = "Standard", "Standard"
-        DELUXE = "Deluxe", "Deluxe"
-        SUITE = "Suite", "Suite"
 
+class RoomTypes(models.TextChoices):
+    STANDARD = "Standard", "Standard"
+    DELUXE = "Deluxe", "Deluxe"
+    SUITE = "Suite", "Suite"
+
+
+class HotelRoom(models.Model):
     room_number = models.PositiveIntegerField()
     room_type = models.CharField(max_length=10, choices=RoomTypes.choices)
     capacity = models.PositiveIntegerField()
     amenities = models.TextField()
     price_per_night = models.DecimalField(max_digits=8, decimal_places=2)
     is_reserved = models.BooleanField(default=False)
+
+class ClassTypes(models.TextChoices):
+    MAGE = "Mage", "Mage"
+    WARRIOR = "Warrior", "Warrior"
+    ASSASSIN = "Assassin", "Assassin"
+    SCOUT = "Scout", "Scout"
+
+class Character(models.Model):
+    name = models.CharField(max_length=100)
+    class_name = models.CharField(max_length=20, choices=ClassTypes.choices)
+    level = models.PositiveIntegerField()
+    strength = models.PositiveIntegerField()
+    dexterity = models.PositiveIntegerField()
+    intelligence = models.PositiveIntegerField()
+    hit_points = models.PositiveIntegerField()
+    inventory = models.TextField()
+
