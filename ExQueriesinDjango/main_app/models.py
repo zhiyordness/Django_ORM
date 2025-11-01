@@ -1,5 +1,7 @@
 from django.db import models
 
+from .choices import MealTypeChoices, DungeonDifficultyChoices, WorkoutTypeChoices, Brands, OS
+
 
 # Create your models here.
 
@@ -14,15 +16,9 @@ class ChessPlayer(models.Model):
 
 
 class Meal(models.Model):
-    MEAL_TYPE_CHOICES = (
-        ('Breakfast', 'Breakfast'),
-        ('Lunch', 'Lunch'),
-        ('Dinner', 'Dinner'),
-        ('Snack', 'Snack'),
-    )
 
     name = models.CharField(max_length=100)
-    meal_type = models.CharField(max_length=10, choices=MEAL_TYPE_CHOICES)
+    meal_type = models.CharField(max_length=10, choices=MealTypeChoices.choices)
     preparation_time = models.CharField(max_length=30)
     difficulty = models.PositiveIntegerField()
     calories = models.PositiveIntegerField()
@@ -30,14 +26,8 @@ class Meal(models.Model):
 
 
 class Dungeon(models.Model):
-    DIFFICULTY_CHOICES = (
-        ('Easy', 'Easy'),
-        ('Medium', 'Medium'),
-        ('Hard', 'Hard'),
-    )
-
     name = models.CharField(max_length=100)
-    difficulty = models.CharField(max_length=10, choices=DIFFICULTY_CHOICES)
+    difficulty = models.CharField(max_length=10, choices=DungeonDifficultyChoices.choices)
     location = models.CharField(max_length=100)
     boss_name = models.CharField(max_length=100)
     recommended_level = models.PositiveIntegerField()
@@ -46,16 +36,8 @@ class Dungeon(models.Model):
 
 
 class Workout(models.Model):
-    WORKOUT_TYPE_CHOICES = (
-        ('Cardio', 'Cardio'),
-        ('Strength', 'Strength'),
-        ('Yoga', 'Yoga'),
-        ('CrossFit', 'CrossFit'),
-        ('Calisthenics', 'Calisthenics'),
-    )
-
     name = models.CharField(max_length=200)
-    workout_type = models.CharField(max_length=20, choices=WORKOUT_TYPE_CHOICES)
+    workout_type = models.CharField(max_length=20, choices=WorkoutTypeChoices.choices)
     duration = models.CharField(max_length=30)
     difficulty = models.CharField(max_length=50)
     calories_burned = models.PositiveIntegerField()
@@ -68,25 +50,12 @@ class ArtworkGallery(models.Model):
     rating = models.IntegerField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
 
+
 class Laptop(models.Model):
-
-    class Brands(models.TextChoices):
-        ASUS = 'Asus', 'Asus'
-        ACER = 'Acer', 'Acer'
-        APPLE = 'Apple', 'Apple'
-        LENOVO = 'Lenovo', 'Lenovo'
-        DELL = 'Dell', 'Dell'
-
-    class OS(models.TextChoices):
-        WINDOWS = 'Windows', 'Windows'
-        MACOS = 'macOS', 'macOS'
-        LINUX = 'Linux', 'Linux'
-        CHROMEOS = 'ChromeOS', 'ChromeOS'
-
     brand = models.CharField(max_length=20, choices=Brands.choices)
     processor = models.CharField(max_length=100)
     memory = models.PositiveIntegerField(help_text="Memory in GB")
     storage = models.PositiveIntegerField(help_text="Storage in GB")
-    operational_system = models.CharField(choices=OS.choices)
+    operation_system = models.CharField(max_length=50, choices=OS.choices)
     price = models.DecimalField(max_digits=10, decimal_places=2)
 
