@@ -1,112 +1,1 @@
-import os
-import django
-
-from django.db.models import Case, When, Value, F, TextField, CharField
-# Set up Django
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "orm_skeleton.settings")
-django.setup()
-
-# Import your models
-from main_app.models import ArtworkGallery, Laptop, Brands, OS
-from django.db import connection
-from pprint import pp
-
-# Create and check models
-
-# Run and print your queries
-
-def show_highest_rated_art() -> str:
-    art = ArtworkGallery.objects.order_by('-rating', 'id').first()
-    return f"{art.art_name} is the highest-rated art with a {art.rating} rating!"
-
-
-artwork1 = ArtworkGallery(artist_name='Vincent van Gogh', art_name='Starry Night', rating=4, price=1200000.0)
-artwork2 = ArtworkGallery(artist_name='Leonardo da Vinci', art_name='Mona Lisa', rating=5, price=1500000.0)
-
-
-def bulk_create_arts(first_art: ArtworkGallery, second_art: ArtworkGallery) -> None:
-    ArtworkGallery.objects.bulk_create([first_art, second_art])
-
-def delete_negative_rated_arts():
-    ArtworkGallery.objects.filter(rating__lt=0).delete()
-
-# bulk_create_arts(artwork1, artwork2)
-# pp(connection.queries)
-
-# bulk_create_arts(artwork1, artwork2)
-# print(show_highest_rated_art())
-# print(ArtworkGallery.objects.all())
-
-
-def show_the_most_expensive_laptop() -> str:
-    me_laptop = Laptop.objects.order_by('-price', 'id').first()
-    return f"{me_laptop.brand} is the most expensive laptop available for {me_laptop.price}$!"
-
-
-def bulk_create_laptops(*args: list[Laptop]):
-    Laptop.objects.bulk_create(*args)
-
-
-def update_to_512_GB_storage():
-    Laptop.objects.filter(brand__in=[Brands.ASUS, Brands.LENOVO]).update(storage=512)
-
-
-def update_to_16_GB_memory():
-    Laptop.objects.filter(brand__in=[Brands.APPLE, Brands.DELL, Brands.ACER]).update(memory=16)
-
-def update_operation_systems():
-    Laptop.objects.update(
-        operation_system=Case(
-            When(brand=Brands.ASUS, then=Value(OS.WINDOWS)),
-            When(brand=Brands.APPLE, then=Value(OS.MACOS)),
-            When(brand=Brands.LENOVO, then=Value(OS.CHROMEOS)),
-            When(brand__in=[Brands.ASUS, Brands.ACER], then=Value(OS.LINUX)),
-    ))
-
-def delete_inexpensive_laptops():
-    Laptop.objects.filter(price__lt=1200).delete()
-
-
-# laptop1 = Laptop(
-#     brand='Asus',
-#     processor='Intel Core i5',
-#     memory=8,
-#     storage=256,
-#     operation_system='MacOS',
-#     price=899.99
-# )
-# laptop2 = Laptop(
-#     brand='Apple',
-#     processor='Chrome OS',
-#     memory=16,
-#     storage=256,
-#     operation_system='MacOS',
-#     price=1399.99
-# )
-# laptop3 = Laptop(
-#     brand='Lenovo',
-#     processor='AMD Ryzen 7',
-#     memory=12,
-#     storage=256,
-#     operation_system='Linux',
-#     price=999.99,
-# )
-#
-# # Create a list of instances
-# laptops_to_create = [laptop1, laptop2, laptop3]
-# #
-# # # Use bulk_create to save the instances
-# bulk_create_laptops(laptops_to_create)
-
-update_to_512_GB_storage()
-update_operation_systems()
-#
-# # Retrieve 2 laptops from the database
-asus_laptop = Laptop.objects.filter(brand__exact='Asus').get()
-lenovo_laptop = Laptop.objects.filter(brand__exact=Brands.LENOVO).get()
-#
-print(asus_laptop.storage)
-print(lenovo_laptop.operation_system)
-
-
-
+import osfrom typing import Listimport djangofrom django.db.models import Case, When, Value, F, TextField, CharFieldfrom main_app.choices import MealTypeChoices, DungeonDifficultyChoices, WorkoutTypeChoices, WorkoutDifficultyChoices# Set up Djangoos.environ.setdefault("DJANGO_SETTINGS_MODULE", "orm_skeleton.settings")django.setup()# Import your modelsfrom main_app.models import ArtworkGallery, Laptop, Brands, OS, ChessPlayer, Meal, Dungeon, Workoutfrom django.db import connectionfrom pprint import pp# Create and check models# Run and print your queriesdef show_highest_rated_art() -> str:    art = ArtworkGallery.objects.order_by('-rating', 'id').first()    return f"{art.art_name} is the highest-rated art with a {art.rating} rating!"artwork1 = ArtworkGallery(artist_name='Vincent van Gogh', art_name='Starry Night', rating=4, price=1200000.0)artwork2 = ArtworkGallery(artist_name='Leonardo da Vinci', art_name='Mona Lisa', rating=5, price=1500000.0)def bulk_create_arts(first_art: ArtworkGallery, second_art: ArtworkGallery) -> None:    ArtworkGallery.objects.bulk_create([first_art, second_art])def delete_negative_rated_arts():    ArtworkGallery.objects.filter(rating__lt=0).delete()def show_the_most_expensive_laptop() -> str:    me_laptop = Laptop.objects.order_by('-price', 'id').first()    return f"{me_laptop.brand} is the most expensive laptop available for {me_laptop.price}$!"def bulk_create_laptops(*args: list[Laptop]):    Laptop.objects.bulk_create(*args)def update_to_512_GB_storage():    Laptop.objects.filter(brand__in=[Brands.ASUS, Brands.LENOVO]).update(storage=512)def update_to_16_GB_memory():    Laptop.objects.filter(brand__in=[Brands.APPLE, Brands.DELL, Brands.ACER]).update(memory=16)def update_operation_systems():    Laptop.objects.update(        operation_system=Case(            When(brand=Brands.ASUS, then=Value(OS.WINDOWS)),            When(brand=Brands.APPLE, then=Value(OS.MACOS)),            When(brand=Brands.LENOVO, then=Value(OS.CHROMEOS)),            When(brand__in=[Brands.ASUS, Brands.ACER], then=Value(OS.LINUX)),    ))def delete_inexpensive_laptops():    Laptop.objects.filter(price__lt=1200).delete()def bulk_create_chess_players(args: List[ChessPlayer]):    ChessPlayer.objects.bulk_create(args)def delete_chess_players():    ChessPlayer.objects.filter(title__exact='no title').delete()def change_chess_games_won():    ChessPlayer.objects.filter(title__exact='GM').update(games_won=30)def change_chess_games_lost():    ChessPlayer.objects.filter(title__exact='no title').update(games_lost=25)def change_chess_games_drawn():    ChessPlayer.objects.all().update(games_drawn=10)def grand_chess_title_GM():    ChessPlayer.objects.filter(rating__gte=2400).update(title="GM")def grand_chess_title_IM():    ChessPlayer.objects.filter(rating__range=(2300, 2399)).update(title="IM")def grand_chess_title_FM():    ChessPlayer.objects.filter(rating__range=(2200, 2299)).update(title="FM")def grand_chess_title_regular_player():    ChessPlayer.objects.filter(rating__range=(0, 2199)).update(title="regular player")def set_new_chefs():    Meal.objects.update(        chef=Case(            When(meal_type=MealTypeChoices.BREAKFAST, then=Value('Gordon Ramsay')),            When(meal_type=MealTypeChoices.LUNCH, then=Value('Julia Child')),            When(meal_type=MealTypeChoices.DINNER, then=Value('Jamie Oliver')),            When(meal_type=MealTypeChoices.BREAKFAST, then=Value('Thomas Keller'))        )    )def set_new_preparation_times() -> None:    Meal.objects.update(        preparation_time=Case(            When(meal_type=MealTypeChoices.BREAKFAST, then=Value("10 minutes")),            When(meal_type=MealTypeChoices.LUNCH, then=Value("12 minutes")),            When(meal_type=MealTypeChoices.DINNER, then=Value("15 minutes")),            When(meal_type=MealTypeChoices.SNACK, then=Value("5 minutes")),        )    )def update_low_calorie_meals():    Meal.objects.filter(meal_type__in=[MealTypeChoices.BREAKFAST, MealTypeChoices.DINNER]).update(calories=400)def update_high_calorie_meals():    Meal.objects.filter(meal_type__in=[MealTypeChoices.LUNCH, MealTypeChoices.SNACK]).update(calories=700)def delete_lunch_and_snack_meals():    Meal.objects.filter(meal_type__in=[MealTypeChoices.LUNCH, MealTypeChoices.SNACK]).delete()def show_hard_dungeons():    dungeons=Dungeon.objects.filter(difficulty=DungeonDifficultyChoices.HARD)    return '\n'.join(f"{d.name} is guarded by {d.boss_name} who has {d.boss_health} health points!" for d in dungeons)def bulk_create_dungeons(args: List[Dungeon]):    Dungeon.objects.bulk_create(args)def update_dungeon_names():    Dungeon.objects.update(        name=Case(            When(difficulty=DungeonDifficultyChoices.EASY, then=Value("The Erased Thombs")),            When(difficulty=DungeonDifficultyChoices.MEDIUM, then=Value("The Coral Labyrinth")),            When(difficulty=DungeonDifficultyChoices.HARD, then=Value("The Lost Haunt"))        )    )def update_dungeon_bosses_health():    Dungeon.objects.exclude(difficulty__exact=DungeonDifficultyChoices.EASY).update(boss_health=500)def update_dungeon_recommended_levels():    Dungeon.objects.update(        recommended_level=Case(            When(difficulty=DungeonDifficultyChoices.EASY, then=Value(25)),            When(difficulty=DungeonDifficultyChoices.MEDIUM, then=Value(50)),            When(difficulty=DungeonDifficultyChoices.HARD, then=Value(75)),            default=F('recommended_level'),            output_field=CharField()        )    )def update_dungeon_rewards():    Dungeon.objects.filter(boss_health=500).update(reward="1000 Gold")    Dungeon.objects.filter(location__startswith='E').update(reward="New dungeon unlocked")    Dungeon.objects.filter(location__endswith='s').update(reward="Dragonheart Amulet")    # Dungeon.objects.update(    #     reward=Case(    #         When(boss_health=500, then=Value("1000 Gold")),    #         When(location__startswith='E', then=Value("New dungeon unlocked")),    #         When(location__endswith='s', then=Value("Dragonheart Amulet")),    #         default=F('reward'),    #         output_field=TextField()    #     )    # )def set_new_locations():    Dungeon.objects.update(        location=Case(            When(recommended_level__exact=25, then=Value("Enchanted Maze")),            When(recommended_level__exact=50, then=Value("Grimstone Mines")),            When(recommended_level__exact=75, then=Value("Shadowed Abyss")),            default=F('location'),            output_field=CharField()        )    )def show_workouts():    workouts = Workout.objects.filter(        workout_type__in=[            WorkoutTypeChoices.CALISTHENICS,            WorkoutTypeChoices.CROSSFIT        ]    ).order_by('id')    return '\n'.join(f"{w.name} from {w.workout_type} type has {w.difficulty} difficulty!" for w in workouts)def get_high_difficulty_cardio_workouts() -> None:    Workout.objects.filter(        difficulty=WorkoutDifficultyChoices.HARD,        workout_type=WorkoutTypeChoices.CARDIO,    ).order_by('instructor')def delete_workouts() -> None:    Workout.objects.exclude(workout_type__in=[        WorkoutTypeChoices.CALISTHENICS,        WorkoutTypeChoices.STRENGTH,    ]).delete()def set_new_instructors() -> None:    Workout.objects.update(        instructor=Case(            When(workout_type=WorkoutTypeChoices.CARDIO, then=Value("John Smith")),            When(workout_type=WorkoutTypeChoices.STRENGTH, then=Value("Michael Williams")),            When(workout_type=WorkoutTypeChoices.YOGA, then=Value("Emily Johnson")),            When(workout_type=WorkoutTypeChoices.CROSSFIT, then=Value("Sarah Davis")),            When(workout_type=WorkoutTypeChoices.CALISTHENICS, then=Value("Chris Heria")),        )    )def set_new_duration_times() -> None:    Workout.objects.update(        duration=Case(            When(instructor="John Smith", then=Value("15 minutes")),            When(instructor="Sarah Davis", then=Value("30 minutes")),            When(instructor="Chris Heria", then=Value("45 minutes")),            When(instructor="Michael Williams", then=Value("1 hour")),            When(instructor="Emily Johnson", then=Value("1 hour and 30 minutes")),        )    )

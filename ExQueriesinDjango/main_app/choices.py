@@ -12,6 +12,11 @@ class DungeonDifficultyChoices(models.TextChoices):
     MEDIUM =  'Medium', 'Medium'
     HARD =  'Hard', 'Hard'
 
+class WorkoutDifficultyChoices(models.TextChoices):
+    EASY = 'Easy', 'Easy'
+    MEDIUM = 'Medium', 'Medium'
+    HARD = 'Hard', 'Hard'
+
 class WorkoutTypeChoices(models.TextChoices):
     CARDIO =  'Cardio', 'Cardio'
     STRENGTH =  'Strength', 'Strength'
