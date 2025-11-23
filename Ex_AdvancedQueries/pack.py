@@ -4,7 +4,7 @@ import datetime
 
 def pack():
     # Remove old archive
-    for item in os.listdir('../AdvancedQueries'):
+    for item in os.listdir('.'):
         if item.endswith(".zip"):
             os.remove(item)
 
