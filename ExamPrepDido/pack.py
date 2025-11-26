@@ -40,7 +40,7 @@ def pack():
                         any(included_dir in str(file_path) for included_dir in INCLUDED_DIRS)):
                     archive_path = file_path.relative_to('.')
                     zipf.write(file_path, archive_path)
-                    print(f"Added: {archive_path}")
+
 
     print(f'Submission created: {archive_name}')
 
